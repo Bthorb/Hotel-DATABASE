@@ -1,0 +1,198 @@
+<?php
+header('Content-Type: text/html; charset=UTF-8');
+
+function searchTable($sql)
+{
+  $conn = new mysqli("localhost", "root", "", "motel");
+  $conn->set_charset("utf8");
+
+  $result = mysqli_query($conn, $sql);
+  if (!$conn) {
+    die("Connection failed:" . mysqli_connect_error());
+  } else {
+    //echo "connected searchTable!";
+  }
+  return $result;
+}
+function searchTable1($sql2)
+{
+  $conn = new mysqli("localhost", "root", "", "motel");
+  $conn->set_charset("utf8");
+
+  $result = mysqli_query($conn, $sql2);
+  if (!$conn) {
+    die("Connection failed:" . mysqli_connect_error());
+  } else {
+    //echo "connected searchTable 1!";
+  }
+  return $result;
+}
+
+if (isset($_GET['valueTosearch'])) {  //search
+  $valueTosearch = $_GET['valueTosearch'];
+  echo $valueTosearch;
+  /*
+  $selected_radio = $_GET['radio'];
+
+  if ($selected_radio  == 'Room') {
+    $sql = "SELECT * FROM `apartment` WHERE Tenant_code =" . $valueTosearch;
+    $search_result1 = searchTable($sql);
+  } else {
+    $sql = "SELECT * FROM `apartment` WHERE tenant_name = " . $valueTosearch;
+    $search_result2 = searchTable($sql);
+  }
+  */
+} else if (isset($_GET['update'])) {  //update
+  /*
+  $R_id = $_GET['Renter_id'];
+  $fname = $_GET['Name'];
+  $lname = $_GET['Last_name'];
+  $sql = "";
+  $search_result = searchTable($sql);
+  header("location: testscript.php");
+  */
+} else if (isset($_GET['insert'])) {  //insert
+  /*
+  $prefix = $_GET['Prefix'];
+  $fname = $_GET['Name'];
+  $lname = $_GET['Last_name'];
+  $roomNo = $_GET['Room_number'];
+  $sta = $_GET['Room_status'];
+  $Renter = "A" . $_GET['Room_number'];
+  $sql = "";
+  $search_result = searchTable($sql);
+  header("location: testscript.php");
+  */
+} else {  //Q ข้อมูลออกมาทั้งหมด
+
+  // echo "all data." ;
+  $sql = "SELECT * FROM `apartment`";
+  $sql_all = "SELECT apartment.rental_code, apartment.room_number ,apartment.Tenant_code , apartment.tenant_name , apartment.contract_date , apartment.expiration_date , the_room.Room_Status , the_room.Room_type FROM `apartment` INNER JOIN `the_room` ON apartment.room_number = the_room.room_number";
+
+  $search_result1 = searchTable($sql_all);
+  $search_result2 = searchTable($sql);
+
+  echo '<pre>';
+  print_r($search_result1);
+  echo '</pre>';
+}
+
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style_table.css">
+  <link rel="stylesheet" href="button_delete.css">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"> -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/jquery-3.1.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.min.js"></script> -->
+  <title>TEST</title>
+
+</head>
+
+<body class="bg-success">
+  <br>
+  <form>
+    <button class="btn btn-default" onClick='window.history.back()' type="button"><span class="glyphicon glyphicon-chevron-left"></span> Back</button>
+    <div align="center" class="form-group">
+      <input style="width: 200px;" type="text" name="valueTosearch" placeholder=" Search" class="form-control" required="required"><br>
+      <label class="radio-inline"><input type="radio" name="radio" value="Room">Room</label>
+      <label class="radio-inline"><input type="radio" name="radio" value="Name">Name</label><br><br>
+      <button class="btn btn-success" type="submit" name="search" value="Search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+    </div><br>
+  </form>
+
+  <form align="center">
+    <center>
+      <table class="rwd-table" style="width: 80%;" border="1" style="text-align:center">
+        <!--หัวข้อตาราง-->
+        <tr>
+          <th>ID.</th>
+          <th>NO.</th>
+          <th>Tenant Code</th>
+          <th>Tenant Name</th>
+          <th>Contract Date</th>
+          <th>Exp Date</th>
+          <th>Status</th>
+          <th>Room Type</th>
+          <th></th>
+          <?php if (mysqli_num_rows($search_result1) >= 1) { ?>
+            <th colspan="2">
+              <center><button class="btn btn-primary" data-toggle="modal" type="button" data-target="#insert_modal"><i class='fas fa-user-plus'></i> Insert</button></center>
+            </th>
+          <?php } ?>
+        </tr>
+
+        <!--เมื่อไม่พบข้อมูลใด ๆ -->
+        <?php if (mysqli_num_rows($search_result1) < 1) { ?>
+          <tr>
+            <th colspan="4" style="text-align: center;">ไม่พบข้อมูลจากค้นหา กรุณากรอกใหม่</th>
+          </tr>
+
+          <!--เมื่อมีข้อมูล จะนำมาแสดงในตางราง-->
+        <?php } else {
+          $row = mysqli_fetch_array($search_result1);
+          for($i=0;$i<=$row;$i++){
+        ?>
+            <tr>
+              <td><?php echo $row['rental_code']; ?></td>
+              <td><?php echo $row['room_number']; ?></td>
+              <td><?php echo $row['Tenant_code']; ?></td>
+              <td><?php echo $row['tenant_name']; ?></td>
+              <td><?php echo $row['contract_date']; ?></td>
+              <td><?php echo $row['expiration_date']; ?></td>
+              <td><?php if ($row['Room_Status'] == 0) echo "ไม่ว่าง";
+                  else echo "ว่าง"; ?></td>
+              <td><?php echo $row['Room_type']; ?></td>
+              <td>
+                <?php if ($row['Room_Status'] == 0) { ?>
+                  <button class="btn btn-warning" data-toggle="modal" type="button" data-target="#update_modal
+                  <?php echo $row['rental_code']; ?>"><i class='far fa-edit'></i> Edit</button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#show_modal
+                <?php echo $row['rental_code']; ?>"><span class="glyphicon glyphicon-user"></span> Info</button>
+              </td>
+              <td>
+                <a href="JavaScript:if(confirm('Confirm Delete?') == true){window.location='delete.php?id=<?php echo $row['rental_code']; ?>';}">
+                  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button></a>
+              </td>
+            <?php } else {
+                  echo "<td></td><td></td>";
+                } ?>
+            </tr>
+
+        <?php
+            include 'update1.php';
+            include 'insert1.php';
+            include 'delete.php';
+            while ($one = mysqli_fetch_array($search_result2)) :
+              include 'show.php';
+            endwhile;
+          }
+        }
+        ?>
+      </table>
+
+    </center>
+  </form>
+</body>
+
+</html>

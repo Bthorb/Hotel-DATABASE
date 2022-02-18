@@ -1,0 +1,21 @@
+.d-flex {
+   margin: 40px;
+    right: 400px;
+    width: 400px;
+}
+
+.form-control-me-2{
+    max-width: 800px ;
+    height: 50px;
+    text-align: center;
+   
+}
+
+.btn-outline-success{
+    height: 50px;
+
+}
+
+.bodyfull {
+    background-color: darkolivegreen;
+}
